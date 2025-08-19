@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypm_test"
+description = "Python library for power managment testing & characterization"
+readme = "Readme.md"
+requires-python = ">=3.9"
+keywords = [
+  "Power-Managment",
+  "Testing",
+  "IoT",
+  "Embedded",
+  "Systems",
+  "Electronics",
+  "Pytest",
+  "PyVISA"
+]
+authors = [
+  {name ="Ammar Khallouf", email ="ammar.khallouf@tum.de"}
+]
+classifiers = [
+  "Operating System :: Microsoft :: Windows",
+  "Framework :: Pytest",
+  "Natural Language :: English",
+  "Topic :: Software Development :: Testing",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "License :: OSI Approved :: MIT License"
+]
+
+dependencies = ["pytest>=7.4.4", "PyVISA>=1.14.1"]
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+lint = ["ruff>=0.11.11"]
+
+[project.urls]
+Homepage = "https://github.com/ammarkh95/pypm-test"
+Documentation = "https://github.com/ammarkh95/pypm-test"
+Repository = "https://github.com/ammarkh95/pypm-test"
+
+[project.entry-points.pytest11]
+pytest_sit = "pypm_test.plugin"
+pytest_sit_fixtures = "pypm_test.fixtures"
+
+[tool.setuptools.dynamic]
+version = {attr = "pypm_test.__about__.__version__"}
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+ignore = ["F405"]
