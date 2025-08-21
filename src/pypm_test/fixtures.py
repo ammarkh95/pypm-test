@@ -67,14 +67,14 @@ def psu_handle(
     u36_wrapper.close()
 
 
-# Fixtures for the Keysight U2723A Source Measure Unit
+# Fixtures for the Keysight U2723 Source Measure Unit
 #########################################################
 @pytest.fixture(scope="session")
 def smu_handle(
     pytestconfig: Config,
     pyvisa_session: Tuple[pyvisa.ResourceManager, Tuple[str, ...]],
 ) -> Generator[KeysightU2723Wrapper, None, None]:
-    """Initialize an instance of KeysightU27Wrapper and opens connection to USB connected keysight U2723A"""
+    """Initialize an instance of KeysightU27Wrapper and opens connection to USB connected keysight U2723"""
 
     if not pytestconfig.getini("smu_serial_no"):
         logging.warning(

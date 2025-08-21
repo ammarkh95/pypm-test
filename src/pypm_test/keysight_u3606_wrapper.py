@@ -11,9 +11,9 @@ The wrapper uses the PyVisa library to communicate with the instrument using VIS
 import logging
 import pyvisa
 from enum import Enum
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
 
-logger = logging.getLogger("Keyisght-U36-Wrapper")
+logger = logging.getLogger("Keyisght-U3606-Wrapper")
 logger.setLevel(logging.INFO)
 
 
@@ -21,6 +21,7 @@ MAX_VOLTAGE_LIMIT = 30  # V
 MAX_CURRENT_LIMIT = 1.05  # A
 
 
+### Enum Classes for power supply supported power output / measure options ###
 class DCOutputMode(Enum):
     """
     Enumeration to configure output mode for the DC Supply of Keyishgt U3606B (constant voltage or constant current)
@@ -154,6 +155,7 @@ class QuestionRegister(Enum):
     LOW_LIM_FAILED = "2048"
 
 
+### Wrapper class implementing SCPI functions ###
 class KeysightU3606Wrapper:
     """Wrapper class for utilitzing the power supply and multimeter functions of Keysight U3606B DC power supply / Multimeter"""
 
@@ -262,8 +264,8 @@ class KeysightU3606Wrapper:
         output_value: float,
         over_voltage_limit: float = 30,
         over_current_limit: float = 1,
-        voltage_range: DCOutputVoltageRange = DCOutputVoltageRange.MAX,
-        current_range: DCOutputCurrentRange = DCOutputCurrentRange.DEFAULT,
+        voltage_range: DCOutputVoltageRange = DCOutputVoltageRange.AUTO,
+        current_range: DCOutputCurrentRange = DCOutputCurrentRange.AUTO,
     ) -> None:
         """
         Configure the output settings for the DC supply
@@ -1026,3 +1028,69 @@ class KeysightU3606Wrapper:
             return str(logged_data)
         else:
             return float(logged_data)
+
+
+### Context manager for using the power supply and mulitmeter functions within 'with' block ###
+class KeysightU3606SupplyAndMultimeter:
+    """
+    Context manger to access Keysight U3606B device and configure the power supply / multimeter instrument
+    """
+
+    def __init__(
+        self,
+        pyvisa_manager: pyvisa.ResourceManager,
+        serial_no: str,
+        dc_output_mode: Optional[DCOutputMode] = None,
+        mulitimeter_mode: Optional[MultimeterMode] = None,
+        dc_output_value: Optional[
+            float
+        ] = 0,  # Voltage in Volts or Current in Amps based on DC output mode
+        dc_output_volt_range: Optional[
+            DCOutputVoltageRange
+        ] = DCOutputVoltageRange.AUTO,
+        dc_output_curr_range: Optional[
+            DCOutputCurrentRange
+        ] = DCOutputCurrentRange.AUTO,
+        multimeter_range: Optional[MultimeterRange] = MultimeterRange.AUTO,
+        multimeter_res: Optional[
+            MultimeterResolution
+        ] = MultimeterResolution.MIN,
+        multimeter_signal: Optional[SignalType] = SignalType.DC,
+    ):
+        self.pyvisa_manager = pyvisa_manager
+        self.serial_no = serial_no
+        self.pyvisa_devices = self.pyvisa_manager.list_resources()
+        self.keysgiht_u3606 = KeysightU3606Wrapper(
+            serial_no, self.pyvisa_manager, self.pyvisa_devices
+        )
+        self.dc_output_mode = dc_output_mode
+        self.dc_output_value: float = dc_output_value
+        self.dc_output_volt_range = dc_output_volt_range
+        self.dc_output_curr_range = dc_output_curr_range
+        self.mulitimeter_mode = mulitimeter_mode
+        self.multimeter_range = multimeter_range
+        self.multimeter_res = multimeter_res
+        self.multimeter_signal = multimeter_signal
+
+    def __enter__(self):
+        self.keysgiht_u3606.open()
+        if self.mulitimeter_mode is not None:
+            self.keysgiht_u3606.configure_multimeter(
+                self.mulitimeter_mode,
+                self.multimeter_range,
+                self.multimeter_res,
+                self.multimeter_signal,
+            )
+        if self.dc_output_mode is not None:
+            self.keysgiht_u3606.configure_dc_supply(
+                self.dc_output_mode,
+                self.dc_output_value,
+                voltage_range=self.dc_output_volt_range,
+                current_range=self.dc_output_curr_range,
+            )
+        return self.keysgiht_u3606
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.keysgiht_u3606.clear_presets()
+        self.keysgiht_u3606.clear_status()
+        self.keysgiht_u3606.close()

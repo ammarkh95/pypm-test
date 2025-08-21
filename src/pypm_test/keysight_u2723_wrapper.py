@@ -1,5 +1,5 @@
 """
-Wrapper for automating SMU functions of Keyisght U2723A
+Wrapper for automating SMU functions of Keyisght U2723
 
 The wrapper uses the PyVisa library to communicate with the instrument using VISA standard protocol
 
@@ -14,10 +14,10 @@ The wrapper uses the PyVisa library to communicate with the instrument using VIS
 import logging
 import pyvisa
 from enum import Enum
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-logger = logging.getLogger("Keyisght-U2723A-Wrapper")
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger("Keyisght-U2723-Wrapper")
+logger.setLevel(logging.INFO)
 
 
 MAX_VOLTAGE_LIMIT = 20  # V
@@ -27,9 +27,10 @@ MAX_CURRENT_LIMIT = 0.12  # A
 MIN_CURRENT_LIMIT = -0.12  # A
 
 
+### Enum Classes for source measure unit supported channels / power output / measure options ###
 class SMUChannel(Enum):
     """
-    Enumeration of U2723A SMU channels
+    Enumeration of U2723 SMU channels
     """
 
     @classmethod
@@ -41,9 +42,22 @@ class SMUChannel(Enum):
     CH3 = 3
 
 
+class SMUChannelMode(Enum):
+    """
+    Enumeration of U2723 SMU channel modes
+    """
+
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: cls.__name__ + "." + c.name, cls))
+
+    SVMI = 1  # Source Voltage , Measure Current
+    SIMV = 2  # Source Current, Measure Voltage
+
+
 class SMUVoltageRange(Enum):
     """
-    Enumeration of supported voltage ranges for Keyishgt U2723A
+    Enumeration of supported voltage ranges for Keyishgt U2723
     """
 
     @classmethod
@@ -56,7 +70,7 @@ class SMUVoltageRange(Enum):
 
 class SMUCurrentRange(Enum):
     """
-    Enumeration of supported current ranges for Keyishgt U2723A
+    Enumeration of supported current ranges for Keyishgt U2723
     """
 
     @classmethod
@@ -73,7 +87,7 @@ class SMUCurrentRange(Enum):
 
 class SMUMemoryList(Enum):
     """
-    Enumeration of available buffer memories for Keyishgt U2723A
+    Enumeration of available buffer memories for Keyishgt U2723
     Each channel has two memory lists
     """
 
@@ -85,8 +99,9 @@ class SMUMemoryList(Enum):
     Mem2 = 2
 
 
+### Wrapper class implementing SCPI functions ###
 class KeysightU2723Wrapper:
-    """Wrapper class for utilitzing the SMU functions of Keysight U2723A"""
+    """Wrapper class for utilitzing the SMU functions of Keysight U2723"""
 
     def __init__(
         self,
@@ -110,7 +125,7 @@ class KeysightU2723Wrapper:
             )
 
     def open(self) -> None:
-        """Opens the connection to a USB connected U2723A"""
+        """Opens the connection to a USB connected U2723"""
         for device in self._detected_devices:
             # Scan for USB devices
             if device.find("USB") == 0 and self._serial_no in str(device):
@@ -118,11 +133,11 @@ class KeysightU2723Wrapper:
                 self._device_handle = self._device_manager.open_resource(
                     self._device_url
                 )
-                # set long timeout for U2723A (greater than 5 seconds) as recommended by user manual for array measurements
+                # set long timeout for U2723 (greater than 5 seconds) as recommended by user manual for array measurements
                 self._device_handle.timeout = 120e3  # (2 minutes)
                 device_info = self._device_handle.query("*IDN?")
-                # ckech it is a U2723A mode instrument
-                if "U2723A" in str(device_info):
+                # ckech it is a U2723 mode instrument
+                if "U2723" in str(device_info):
                     logger.info(
                         f"Opened connection to instrument: {device_info}"
                     )
@@ -131,7 +146,7 @@ class KeysightU2723Wrapper:
 
         if not self._target_device_found:
             raise RuntimeError(
-                f"Could not detect target device of model: U2723A and serial no: {self._serial_no}"
+                f"Could not detect target device of model: U2723 and serial no: {self._serial_no}"
             )
 
     def close(self) -> None:
@@ -155,7 +170,7 @@ class KeysightU2723Wrapper:
     def reset_defaults(self) -> None:
         """resets the instrument to its factory default state"""
         self._device_handle.write("*RST")
-        logger.info("U2723A reset to default factory state")
+        logger.info("U2723 reset to default factory state")
 
     def wait(self) -> None:
         """
@@ -212,7 +227,7 @@ class KeysightU2723Wrapper:
     def query_system_errors(self) -> str:
         """
         reads and clears one error from the instrument's error queue
-        A record of up to 20 errors can be stored in the U2723A error queue
+        A record of up to 20 errors can be stored in the U2723 error queue
 
         For SCPI command errors, this command returns the following format string:
         <Number,"Error String">
@@ -387,7 +402,7 @@ class KeysightU2723Wrapper:
     def measure_current_scalar(self, channel: SMUChannel) -> float:
         """
         Queries the current measured across the current sense resistor inside the
-        U2722A/U2723A
+        U2722/U2723
 
         Args:
             - channel: SMU channle to use for measurement
@@ -402,7 +417,7 @@ class KeysightU2723Wrapper:
 
     def measure_voltage_scalar(self, channel: SMUChannel) -> float:
         """
-        Queries the voltage measured at the sense terminals of the U2722A/U2723A for
+        Queries the voltage measured at the sense terminals of the U2722A/U2723 for
         the specified channel
 
         Args:
@@ -525,3 +540,91 @@ class KeysightU2723Wrapper:
         """
         cal_return_code = self._device_handle.query("CAL?")
         return int(cal_return_code)
+
+
+### Context manager for using the source measure unit functions within 'with' block ###
+class KeysightU2723SourceMeasureUnit:
+    """
+    Context manger to access and configure Keysight U2723 device
+    """
+
+    def __init__(
+        self,
+        pyvisa_manager: pyvisa.ResourceManager,
+        serial_no: str,
+        smu_channels: Optional[List[SMUChannel]] = None,
+        smu_channels_modes: Optional[
+            List[SMUChannelMode]
+        ] = None,  # in case sepcifed: size need to match list of SMU channels
+        smu_source_voltages: Optional[
+            List[float]
+        ] = None,  # in case sepcifed: size need to match list of SMU channels
+        smu_source_currents: Optional[
+            List[float]
+        ] = None,  # in case sepcifed: size need to match list of SMU channels
+        smu_voltage_ranges: Optional[
+            List[SMUVoltageRange]
+        ] = None,  # in case sepcifed: size need to match list of SMU channels
+        smu_current_ranges: Optional[
+            List[SMUCurrentRange]
+        ] = None,  # in case sepcifed: size need to match list of SMU channels
+    ):
+        self.pyvisa_manager = pyvisa_manager
+        self.serial_no = serial_no
+        self.pyvisa_devices = self.pyvisa_manager.list_resources()
+        self.keysgiht_u2723 = KeysightU2723Wrapper(
+            serial_no, self.pyvisa_manager, self.pyvisa_devices
+        )
+        self.smu_channels = smu_channels
+        self.smu_channels_modes = smu_channels_modes
+        self.smu_voltage_ranges = smu_voltage_ranges
+        self.smu_smu_current_ranges = smu_current_ranges
+        self.smu_source_voltages = smu_source_voltages
+        self.smu_source_currents = smu_source_currents
+
+    def __enter__(self):
+        self.keysgiht_u2723.open()
+        if (isinstance(self.smu_channels_modes, list)) and (
+            isinstance(self.smu_channels, list)
+        ):
+            for i, ch in enumerate(self.smu_channels):
+                try:
+                    self.keysgiht_u2723.set_smu_voltage_range(
+                        ch, self.smu_voltage_ranges[i]
+                    )
+                    self.keysgiht_u2723.set_smu_current_range(
+                        ch, self.smu_smu_current_ranges[i]
+                    )
+
+                    if (
+                        self.smu_channels_modes[i].value
+                        == SMUChannelMode.SVMI.value
+                    ):
+                        self.keysgiht_u2723.set_smu_source_voltage(
+                            ch, self.smu_source_voltages[i]
+                        )
+
+                    elif (
+                        self.smu_channels_modes[i].value
+                        == SMUChannelMode.SIMV.value
+                    ):
+                        self.keysgiht_u2723.set_smu_source_current(
+                            ch, self.smu_source_currents[i]
+                        )
+
+                    else:
+                        logger.warning(
+                            f"Invalid channel mode: {self.smu_channels_modes[i]}"
+                        )
+
+                except IndexError:
+                    logger.warning(
+                        f"Could not get channel: {i + 1} configuration: [mode or range or output]"
+                    )
+
+        return self.keysgiht_u2723
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.keysgiht_u2723.clear_presets()
+        self.keysgiht_u2723.clear_status()
+        self.keysgiht_u2723.close()
