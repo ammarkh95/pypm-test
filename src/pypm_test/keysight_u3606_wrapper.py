@@ -1,5 +1,5 @@
 """
-Wrapper for automating (DC power supply + Multimeter) functions of Keysight U3606B
+Wrapper for automating (DC power supply + Multimeter) functions of Keysight U3606
 
 The wrapper uses the PyVisa library to communicate with the instrument using VISA standard protocol
 
@@ -24,7 +24,7 @@ MAX_CURRENT_LIMIT = 1.05  # A
 ### Enum Classes for power supply supported power output / measure options ###
 class DCOutputMode(Enum):
     """
-    Enumeration to configure output mode for the DC Supply of Keyishgt U3606B (constant voltage or constant current)
+    Enumeration to configure output mode for the DC Supply of Keyishgt U3606 (constant voltage or constant current)
     """
 
     @classmethod
@@ -37,7 +37,7 @@ class DCOutputMode(Enum):
 
 class DCOutputVoltageRange(Enum):
     """
-    Enumeration to configure output voltage range for the DC Supply of Keyishgt U3606B (constant voltage or constant current)
+    Enumeration to configure output voltage range for the DC Supply of Keyishgt U3606 (constant voltage or constant current)
     """
 
     @classmethod
@@ -51,7 +51,7 @@ class DCOutputVoltageRange(Enum):
 
 class DCOutputCurrentRange(Enum):
     """
-    Enumeration to configure output curremt range for the DC Supply of Keyishgt U3606B (constant voltage or constant current)
+    Enumeration to configure output curremt range for the DC Supply of Keyishgt U3606 (constant voltage or constant current)
     """
 
     @classmethod
@@ -66,7 +66,7 @@ class DCOutputCurrentRange(Enum):
 
 class MultimeterMode(Enum):
     """
-    Enumeration to configure measurement mode for the Multimeter instrument of Keyishgt U3606B
+    Enumeration to configure measurement mode for the Multimeter instrument of Keyishgt U3606
     """
 
     @classmethod
@@ -80,7 +80,7 @@ class MultimeterMode(Enum):
 
 class MultimeterRange(Enum):
     """
-    Enumeration to configure range option for the Multimeter instrument of Keyishgt U3606B
+    Enumeration to configure range option for the Multimeter instrument of Keyishgt U3606
     """
 
     @classmethod
@@ -94,7 +94,7 @@ class MultimeterRange(Enum):
 
 class MultimeterResolution(Enum):
     """
-    Enumeration to configure the resolution option for the Multimeter instrument of Keyishgt U3606B
+    Enumeration to configure the resolution option for the Multimeter instrument of Keyishgt U3606
     """
 
     @classmethod
@@ -107,7 +107,7 @@ class MultimeterResolution(Enum):
 
 class SignalType(Enum):
     """
-    Enumeration to configure the signal type for the Multimeter instrument of Keyishgt U3606B
+    Enumeration to configure the signal type for the Multimeter instrument of Keyishgt U3606
     """
 
     @classmethod
@@ -120,7 +120,7 @@ class SignalType(Enum):
 
 class CalcFunction(Enum):
     """
-    Enumeration for the caclulation functions of U3606B
+    Enumeration for the caclulation functions of U3606
     """
 
     @classmethod
@@ -139,7 +139,7 @@ class CalcFunction(Enum):
 
 class QuestionRegister(Enum):
     """
-    Enumeration for the condition registers (decimal values) of U3606B
+    Enumeration for the condition registers (decimal values) of U3606
     """
 
     @classmethod
@@ -157,7 +157,7 @@ class QuestionRegister(Enum):
 
 ### Wrapper class implementing SCPI functions ###
 class KeysightU3606Wrapper:
-    """Wrapper class for utilitzing the power supply and multimeter functions of Keysight U3606B DC power supply / Multimeter"""
+    """Wrapper class for utilitzing the power supply and multimeter functions of Keysight U3606 DC power supply / Multimeter"""
 
     def __init__(
         self,
@@ -180,7 +180,7 @@ class KeysightU3606Wrapper:
             )
 
     def open(self) -> None:
-        """Opens the connection to a USB connected U3606B"""
+        """Opens the connection to a USB connected U3606"""
 
         for device in self._detected_devices:
             # Scan for USB devices
@@ -227,7 +227,7 @@ class KeysightU3606Wrapper:
     def reset_defaults(self) -> None:
         """resets the instrument to its factory default state"""
         self._device_handle.write("*RST")
-        logger.info("U3606B reset to default factory state")
+        logger.info("U3606 reset to default factory state")
 
     def wait(self) -> None:
         """
@@ -250,7 +250,7 @@ class KeysightU3606Wrapper:
     def query_system_errors(self) -> str:
         """
         reads and clears one error from the instrument's error queue
-        A record of up to 20 errors can be stored in the U3606B error queue
+        A record of up to 20 errors can be stored in the U3606 error queue
 
         For SCPI command errors, this command returns the following format string:
         <Number,"Error String">
@@ -563,7 +563,7 @@ class KeysightU3606Wrapper:
             )
 
         logger.info(
-            f"U3606B configured for following measuremnt setting: {signal_type.value, measure_mode.value, measure_range.value, measure_resolution.value}"
+            f"U3606 configured for following measuremnt setting: {signal_type.value, measure_mode.value, measure_range.value, measure_resolution.value}"
         )
 
     def measure(
@@ -967,21 +967,21 @@ class KeysightU3606Wrapper:
 
     def enable_data_logging(self) -> None:
         """
-        starts the U3606B data logging operation
+        starts the U3606 data logging operation
 
         Remarks:
             - The data logging operation will be stopped automatically for the following cases:
                 - The data logging operation is completed
-                - The U3606B memory is full.
+                - The U3606 memory is full.
 
-            - If there is data stored in the U3606B, the new data will be appended to the old
-            data. When the U3606B is recording, it will not accept any setting commands
+            - If there is data stored in the U3606, the new data will be appended to the old
+            data. When the U3606 is recording, it will not accept any setting commands
         """
         self._device_handle.write("LOG ON")
 
     def disable_data_logging(self) -> None:
         """
-        stops the U3606B data logging operation
+        stops the U3606 data logging operation
         """
         self._device_handle.write("LOG OFF")
 
@@ -1033,7 +1033,7 @@ class KeysightU3606Wrapper:
 ### Context manager for using the power supply and mulitmeter functions within 'with' block ###
 class KeysightU3606SupplyAndMultimeter:
     """
-    Context manger to access Keysight U3606B device and configure the power supply / multimeter instrument
+    Context manger to access Keysight U3606 device and configure the power supply / multimeter instrument
     """
 
     def __init__(
