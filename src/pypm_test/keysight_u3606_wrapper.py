@@ -1044,7 +1044,7 @@ class KeysightU3606SupplyAndMultimeter:
         mulitimeter_mode: Optional[MultimeterMode] = None,
         dc_output_value: Optional[
             float
-        ] = 0,  # Voltage in Volts or Current in Amps based on DC output mode
+        ] = 0.0,  # Voltage in Volts or Current in Amps based on DC output mode
         dc_output_volt_range: Optional[
             DCOutputVoltageRange
         ] = DCOutputVoltageRange.AUTO,

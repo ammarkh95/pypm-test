@@ -12,6 +12,7 @@ from .keysight_u3606_wrapper import (
     CalcFunction,
     QuestionRegister,
     KeysightU3606Wrapper,
+    KeysightU3606SupplyAndMultimeter
 )
 
 from .keysight_u2723_wrapper import (
@@ -19,7 +20,9 @@ from .keysight_u2723_wrapper import (
     SMUVoltageRange,
     SMUCurrentRange,
     SMUMemoryList,
+    SMUChannelMode,
     KeysightU2723Wrapper,
+    KeysightU2723SourceMeasureUnit
 )
 
 __all__ = [
@@ -40,5 +43,8 @@ __all__ = [
     "SMUVoltageRange",
     "SMUCurrentRange",
     "SMUMemoryList",
+    "SMUChannelMode",
     "KeysightU2723Wrapper",
+    "KeysightU3606SupplyAndMultimeter",
+    "KeysightU2723SourceMeasureUnit"
 ]

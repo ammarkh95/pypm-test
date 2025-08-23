@@ -552,22 +552,18 @@ class KeysightU2723SourceMeasureUnit:
         self,
         pyvisa_manager: pyvisa.ResourceManager,
         serial_no: str,
-        smu_channels: Optional[List[SMUChannel]] = None,
-        smu_channels_modes: Optional[
-            List[SMUChannelMode]
-        ] = None,  # in case sepcifed: size need to match list of SMU channels
-        smu_source_voltages: Optional[
-            List[float]
-        ] = None,  # in case sepcifed: size need to match list of SMU channels
-        smu_source_currents: Optional[
-            List[float]
-        ] = None,  # in case sepcifed: size need to match list of SMU channels
-        smu_voltage_ranges: Optional[
-            List[SMUVoltageRange]
-        ] = None,  # in case sepcifed: size need to match list of SMU channels
-        smu_current_ranges: Optional[
-            List[SMUCurrentRange]
-        ] = None,  # in case sepcifed: size need to match list of SMU channels
+        smu_channel_1_output_mode: Optional[SMUChannelMode] = None,
+        smu_channel_1_output_value: Optional[float] = None,
+        smu_channel_1_voltage_range: Optional[SMUVoltageRange] = None,
+        smu_channel_1_current_range: Optional[SMUCurrentRange] = None,
+        smu_channel_2_output_mode: Optional[SMUChannelMode] = None,
+        smu_channel_2_output_value: Optional[float] = None,
+        smu_channel_2_voltage_range: Optional[SMUVoltageRange] = None,
+        smu_channel_2_current_range: Optional[SMUCurrentRange] = None,
+        smu_channel_3_output_mode: Optional[SMUChannelMode] = None,
+        smu_channel_3_output_value: Optional[float] = None,
+        smu_channel_3_voltage_range: Optional[SMUVoltageRange] = None,
+        smu_channel_3_current_range: Optional[SMUCurrentRange] = None,
     ):
         self.pyvisa_manager = pyvisa_manager
         self.serial_no = serial_no
@@ -575,52 +571,51 @@ class KeysightU2723SourceMeasureUnit:
         self.keysgiht_u2723 = KeysightU2723Wrapper(
             serial_no, self.pyvisa_manager, self.pyvisa_devices
         )
-        self.smu_channels = smu_channels
-        self.smu_channels_modes = smu_channels_modes
-        self.smu_voltage_ranges = smu_voltage_ranges
-        self.smu_smu_current_ranges = smu_current_ranges
-        self.smu_source_voltages = smu_source_voltages
-        self.smu_source_currents = smu_source_currents
+        self.smu_channel_1_output_mode = smu_channel_1_output_mode
+        self.smu_channel_1_output_value = smu_channel_1_output_value
+        self.smu_channel_1_voltage_range = smu_channel_1_voltage_range
+        self.smu_channel_1_current_range = smu_channel_1_current_range
+        self.smu_channel_2_output_mode = smu_channel_2_output_mode
+        self.smu_channel_2_output_value = smu_channel_2_output_value
+        self.smu_channel_2_voltage_range = smu_channel_2_voltage_range
+        self.smu_channel_2_current_range = smu_channel_2_current_range
+        self.smu_channel_3_output_mode = smu_channel_3_output_mode
+        self.smu_channel_3_output_value = smu_channel_3_output_value
+        self.smu_channel_3_voltage_range = smu_channel_3_voltage_range
+        self.smu_channel_3_current_range = smu_channel_3_current_range
 
     def __enter__(self):
         self.keysgiht_u2723.open()
-        if (isinstance(self.smu_channels_modes, list)) and (
-            isinstance(self.smu_channels, list)
-        ):
-            for i, ch in enumerate(self.smu_channels):
-                try:
-                    self.keysgiht_u2723.set_smu_voltage_range(
-                        ch, self.smu_voltage_ranges[i]
-                    )
-                    self.keysgiht_u2723.set_smu_current_range(
-                        ch, self.smu_smu_current_ranges[i]
-                    )
+        # CH1
+        if (self.smu_channel_1_voltage_range is not None) and (self.smu_channel_1_current_range is not None):
+            self.keysgiht_u2723.set_smu_voltage_range(SMUChannel.CH1, self.smu_channel_1_voltage_range)
+            self.keysgiht_u2723.set_smu_current_range(SMUChannel.CH1, self.smu_channel_1_current_range)
 
-                    if (
-                        self.smu_channels_modes[i].value
-                        == SMUChannelMode.SVMI.value
-                    ):
-                        self.keysgiht_u2723.set_smu_source_voltage(
-                            ch, self.smu_source_voltages[i]
-                        )
+        if (self.smu_channel_1_output_mode == SMUChannelMode.SVMI) and (self.smu_channel_1_output_value is not None):
+            self.keysgiht_u2723.set_smu_source_voltage(SMUChannel.CH1, self.smu_channel_1_output_value)
 
-                    elif (
-                        self.smu_channels_modes[i].value
-                        == SMUChannelMode.SIMV.value
-                    ):
-                        self.keysgiht_u2723.set_smu_source_current(
-                            ch, self.smu_source_currents[i]
-                        )
+        if (self.smu_channel_1_output_mode == SMUChannelMode.SIMV) and (self.smu_channel_1_output_value is not None):
+            self.keysgiht_u2723.set_smu_source_current(SMUChannel.CH1, self.smu_channel_1_output_value)
+        # CH2
+        if (self.smu_channel_2_voltage_range is not None) and (self.smu_channel_2_current_range is not None):
+            self.keysgiht_u2723.set_smu_voltage_range(SMUChannel.CH2, self.smu_channel_2_voltage_range)
+            self.keysgiht_u2723.set_smu_current_range(SMUChannel.CH2, self.smu_channel_2_current_range)
 
-                    else:
-                        logger.warning(
-                            f"Invalid channel mode: {self.smu_channels_modes[i]}"
-                        )
+        if (self.smu_channel_2_output_mode == SMUChannelMode.SVMI) and (self.smu_channel_2_output_value is not None):
+            self.keysgiht_u2723.set_smu_source_voltage(SMUChannel.CH2, self.smu_channel_2_output_value)
 
-                except IndexError:
-                    logger.warning(
-                        f"Could not get channel: {i + 1} configuration: [mode or range or output]"
-                    )
+        if (self.smu_channel_2_output_mode == SMUChannelMode.SIMV) and (self.smu_channel_2_output_value is not None):
+            self.keysgiht_u2723.set_smu_source_current(SMUChannel.CH2, self.smu_channel_2_output_value)
+        # CH3
+        if (self.smu_channel_3_voltage_range is not None) and (self.smu_channel_3_current_range is not None):
+            self.keysgiht_u2723.set_smu_voltage_range(SMUChannel.CH3, self.smu_channel_3_voltage_range)
+            self.keysgiht_u2723.set_smu_current_range(SMUChannel.CH3, self.smu_channel_3_current_range)
+
+        if (self.smu_channel_3_output_mode == SMUChannelMode.SVMI) and (self.smu_channel_3_output_value is not None):
+            self.keysgiht_u2723.set_smu_source_voltage(SMUChannel.CH3, self.smu_channel_3_output_value)
+
+        if (self.smu_channel_3_output_mode == SMUChannelMode.SIMV) and (self.smu_channel_3_output_value is not None):
+            self.keysgiht_u2723.set_smu_source_current(SMUChannel.CH3, self.smu_channel_3_output_value)
 
         return self.keysgiht_u2723
 
