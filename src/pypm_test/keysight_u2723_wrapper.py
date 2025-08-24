@@ -587,35 +587,77 @@ class KeysightU2723SourceMeasureUnit:
     def __enter__(self):
         self.keysgiht_u2723.open()
         # CH1
-        if (self.smu_channel_1_voltage_range is not None) and (self.smu_channel_1_current_range is not None):
-            self.keysgiht_u2723.set_smu_voltage_range(SMUChannel.CH1, self.smu_channel_1_voltage_range)
-            self.keysgiht_u2723.set_smu_current_range(SMUChannel.CH1, self.smu_channel_1_current_range)
+        if (self.smu_channel_1_voltage_range is not None) and (
+            self.smu_channel_1_current_range is not None
+        ):
+            self.keysgiht_u2723.set_smu_voltage_range(
+                SMUChannel.CH1, self.smu_channel_1_voltage_range
+            )
+            self.keysgiht_u2723.set_smu_current_range(
+                SMUChannel.CH1, self.smu_channel_1_current_range
+            )
 
-        if (self.smu_channel_1_output_mode == SMUChannelMode.SVMI) and (self.smu_channel_1_output_value is not None):
-            self.keysgiht_u2723.set_smu_source_voltage(SMUChannel.CH1, self.smu_channel_1_output_value)
+        if (self.smu_channel_1_output_mode == SMUChannelMode.SVMI) and (
+            self.smu_channel_1_output_value is not None
+        ):
+            self.keysgiht_u2723.set_smu_source_voltage(
+                SMUChannel.CH1, self.smu_channel_1_output_value
+            )
 
-        if (self.smu_channel_1_output_mode == SMUChannelMode.SIMV) and (self.smu_channel_1_output_value is not None):
-            self.keysgiht_u2723.set_smu_source_current(SMUChannel.CH1, self.smu_channel_1_output_value)
+        if (self.smu_channel_1_output_mode == SMUChannelMode.SIMV) and (
+            self.smu_channel_1_output_value is not None
+        ):
+            self.keysgiht_u2723.set_smu_source_current(
+                SMUChannel.CH1, self.smu_channel_1_output_value
+            )
         # CH2
-        if (self.smu_channel_2_voltage_range is not None) and (self.smu_channel_2_current_range is not None):
-            self.keysgiht_u2723.set_smu_voltage_range(SMUChannel.CH2, self.smu_channel_2_voltage_range)
-            self.keysgiht_u2723.set_smu_current_range(SMUChannel.CH2, self.smu_channel_2_current_range)
+        if (self.smu_channel_2_voltage_range is not None) and (
+            self.smu_channel_2_current_range is not None
+        ):
+            self.keysgiht_u2723.set_smu_voltage_range(
+                SMUChannel.CH2, self.smu_channel_2_voltage_range
+            )
+            self.keysgiht_u2723.set_smu_current_range(
+                SMUChannel.CH2, self.smu_channel_2_current_range
+            )
 
-        if (self.smu_channel_2_output_mode == SMUChannelMode.SVMI) and (self.smu_channel_2_output_value is not None):
-            self.keysgiht_u2723.set_smu_source_voltage(SMUChannel.CH2, self.smu_channel_2_output_value)
+        if (self.smu_channel_2_output_mode == SMUChannelMode.SVMI) and (
+            self.smu_channel_2_output_value is not None
+        ):
+            self.keysgiht_u2723.set_smu_source_voltage(
+                SMUChannel.CH2, self.smu_channel_2_output_value
+            )
 
-        if (self.smu_channel_2_output_mode == SMUChannelMode.SIMV) and (self.smu_channel_2_output_value is not None):
-            self.keysgiht_u2723.set_smu_source_current(SMUChannel.CH2, self.smu_channel_2_output_value)
+        if (self.smu_channel_2_output_mode == SMUChannelMode.SIMV) and (
+            self.smu_channel_2_output_value is not None
+        ):
+            self.keysgiht_u2723.set_smu_source_current(
+                SMUChannel.CH2, self.smu_channel_2_output_value
+            )
         # CH3
-        if (self.smu_channel_3_voltage_range is not None) and (self.smu_channel_3_current_range is not None):
-            self.keysgiht_u2723.set_smu_voltage_range(SMUChannel.CH3, self.smu_channel_3_voltage_range)
-            self.keysgiht_u2723.set_smu_current_range(SMUChannel.CH3, self.smu_channel_3_current_range)
+        if (self.smu_channel_3_voltage_range is not None) and (
+            self.smu_channel_3_current_range is not None
+        ):
+            self.keysgiht_u2723.set_smu_voltage_range(
+                SMUChannel.CH3, self.smu_channel_3_voltage_range
+            )
+            self.keysgiht_u2723.set_smu_current_range(
+                SMUChannel.CH3, self.smu_channel_3_current_range
+            )
 
-        if (self.smu_channel_3_output_mode == SMUChannelMode.SVMI) and (self.smu_channel_3_output_value is not None):
-            self.keysgiht_u2723.set_smu_source_voltage(SMUChannel.CH3, self.smu_channel_3_output_value)
+        if (self.smu_channel_3_output_mode == SMUChannelMode.SVMI) and (
+            self.smu_channel_3_output_value is not None
+        ):
+            self.keysgiht_u2723.set_smu_source_voltage(
+                SMUChannel.CH3, self.smu_channel_3_output_value
+            )
 
-        if (self.smu_channel_3_output_mode == SMUChannelMode.SIMV) and (self.smu_channel_3_output_value is not None):
-            self.keysgiht_u2723.set_smu_source_current(SMUChannel.CH3, self.smu_channel_3_output_value)
+        if (self.smu_channel_3_output_mode == SMUChannelMode.SIMV) and (
+            self.smu_channel_3_output_value is not None
+        ):
+            self.keysgiht_u2723.set_smu_source_current(
+                SMUChannel.CH3, self.smu_channel_3_output_value
+            )
 
         return self.keysgiht_u2723
 
@@ -623,3 +665,213 @@ class KeysightU2723SourceMeasureUnit:
         self.keysgiht_u2723.clear_presets()
         self.keysgiht_u2723.clear_status()
         self.keysgiht_u2723.close()
+
+
+### Utility functions for Keysight U2723 ###
+def smu_source_voltage_measure_current(
+    smu: KeysightU2723Wrapper,
+    channel: SMUChannel,
+    V_out: float,
+    memory_list: SMUMemoryList = SMUMemoryList.Mem1,
+    measure_count: int = 1,
+    measure_delay_ms: Optional[int] = None,
+    current_limit: float = 0.1,  # 100 mA
+    voltage_range: SMUVoltageRange = SMUVoltageRange.R20V,
+    current_range: SMUVoltageRange = SMUCurrentRange.R120mA,
+) -> None:
+    """
+    Generate a memeory list to supply voltage and measure current
+    NOTE. for execution of memory list. call: smu.trigger_memory_list(channel)
+    NOTE. When the measurement results reaches 200, the next result will wrap back and replace the first result at the buffer
+
+    Args:
+        smu (KeysightU2723Wrapper): handle to SMU
+        channel (SMUChannel): target SMU channel
+        V_out (float): output voltage to be set on channel by the SMU
+        memory_list (SMUMemoryList, optional): memory list to use Defaults to SMUMemoryList.Mem1.
+        measure_count (int, optional): number of current measurements to perform. Defaults to 1.
+    """
+
+    # select memory list and clear existing commands
+    smu.write("MEM:LIST %s, (@%s)" % (memory_list.value, channel.value))
+    smu.write("MEM:LIST:CLEAR (@%s)" % (channel.value))
+
+    # set voltage ,crurent ranges and current limit for the channel
+    smu.write("MEM:VOLT:RANG %s, (@%s)" % (voltage_range.value, channel.value))
+    smu.write("MEM:CURR:RANG %s, (@%s)" % (current_range.value, channel.value))
+    smu.write("MEM:CURR:LIM %s, (@%s)" % (current_limit, channel.value))
+    # enable auto delay between source commands
+    smu.write("MEM:SOUR:DEL:AUTO ON, (@%s)" % (channel.value))
+    # source voltage, enable output
+    smu.write("MEM:VOLT:SOUR %s, (@%s)" % (V_out, channel.value))
+    smu.write("MEM:OUTP ON, (@%s)" % (channel.value))
+
+    # add local delay before measure if desired
+    if measure_delay_ms:
+        smu.write(
+            "MEM:SOUR:DEL SING,%s,(@%s)" % (measure_delay_ms, channel.value)
+        )
+        smu.write("MEM:VOLT:SOUR %s, (@%s)" % (V_out, channel.value))
+
+    # make current measurements
+    for _ in range(measure_count):
+        smu.write("MEM:CURR:MEAS (@%s)" % (channel.value))
+
+    # switch off output at the end of measurement
+    smu.write("MEM:OUTP OFF, (@%s)" % (channel.value))
+
+    # stores all commands from the active memory list into the nonvolatile memory
+    smu.write("MEM:LIST:STOR (@%s)" % (channel.value))
+
+
+def smu_source_current_measure_voltage(
+    smu: KeysightU2723Wrapper,
+    channel: SMUChannel,
+    I_out: float,
+    memory_list: SMUMemoryList = SMUMemoryList.Mem1,
+    measure_count: int = 1,
+    measure_delay_ms: Optional[int] = None,
+    voltage_limit: float = 5,  # 5 V
+    voltage_range: SMUVoltageRange = SMUVoltageRange.R20V,
+    current_range: SMUVoltageRange = SMUCurrentRange.R120mA,
+) -> None:
+    """
+    Generate a memeory list to supply current and measure voltage
+    NOTE. for execution of memory list. call: smu.trigger_memory_list(channel)
+    NOTE. When the measurement results reaches 200, the next result will wrap back and replace the first result at the buffer
+
+    Args:
+        smu (KeysightU2723Wrapper): handle to SMU
+        channel (SMUChannel): target SMU channel
+        I_out (float): output current to be set on channel by the SMU
+        memory_list (SMUMemoryList, optional): memory list to use Defaults to SMUMemoryList.Mem1.
+        measure_count (int, optional): number of voltage measurements to perform. Defaults to 1.
+    """
+
+    # select memory list and clear existing commands
+    smu.write("MEM:LIST %s, (@%s)" % (memory_list.value, channel.value))
+    smu.write("MEM:LIST:CLEAR (@%s)" % (channel.value))
+
+    # set voltage ,crurent ranges and voltage limit for the channel
+    smu.write("MEM:VOLT:RANG %s, (@%s)" % (voltage_range.value, channel.value))
+    smu.write("MEM:CURR:RANG %s, (@%s)" % (current_range.value, channel.value))
+    smu.write("MEM:VOLT:LIM %s, (@%s)" % (voltage_limit, channel.value))
+    # enable auto delay
+    smu.write("MEM:SOUR:DEL:AUTO ON, (@%s)" % (channel.value))
+    # source voltage, enable output
+    smu.write("MEM:CURR:SOUR %s, (@%s)" % (I_out, channel.value))
+    smu.write("MEM:OUTP ON, (@%s)" % (channel.value))
+
+    # add local delay before measure if desired
+    if measure_delay_ms:
+        smu.write(
+            "MEM:SOUR:DEL SING,%s,(@%s)" % (measure_delay_ms, channel.value)
+        )
+        smu.write("MEM:CURR:SOUR %s, (@%s)" % (I_out, channel.value))
+
+    # make voltage measurements
+    for _ in range(measure_count):
+        smu.write("MEM:VOLT:MEAS (@%s)" % (channel.value))
+
+    # switch off output at the end of measurement
+    smu.write("MEM:OUTP OFF, (@%s)" % (channel.value))
+
+    # stores all commands from the active memory list into the nonvolatile memory
+    smu.write("MEM:LIST:STOR (@%s)" % (channel.value))
+
+
+def create_smu_pulse_current(
+    smu: KeysightU2723Wrapper,
+    channel: SMUChannel,
+    I_peak: float,
+    pulse_width_ms: float,
+    memory_list: SMUMemoryList = SMUMemoryList.Mem1,
+    loops: int = 1,
+    voltage_limit: float = 20,  # 20 V
+    current_limit: float = 0.1,  # 100 mA
+    voltage_range: SMUVoltageRange = SMUVoltageRange.R20V,
+    current_range: SMUVoltageRange = SMUCurrentRange.R120mA,
+) -> None:
+    """
+    Generate a pulse current signal and store it in SMU memory list
+    NOTE: for execution of memory list. call: smu.trigger_memory_list(channel)
+    NOTE: This function does not enable/disable the SMU channel
+        it is assumed that this done prior to triggering the memory list
+
+    Args:
+        smu (KeysightU2723Wrapper): handle to SMU
+        channel (SMUChannel): target SMU channel
+        I_peak (float): pulse current magnitude in A (negative values indicate sinking current)
+        memory_list (SMUMemoryList, optional): memory list to use Defaults to SMUMemoryList.Mem1.
+        loops (int, optional): number of times to repeat the pulse loading. Defaults to 1.
+    """
+    # select memory list and clear existing commands
+    smu.write("MEM:LIST %s, (@%s)" % (memory_list.value, channel.value))
+    smu.write("MEM:LIST:CLEAR (@%s)" % (channel.value))
+
+    # set voltage , current ranges and voltage, current limits for the channel
+    smu.write("MEM:VOLT:RANG %s, (@%s)" % (voltage_range.value, channel.value))
+    smu.write("MEM:CURR:RANG %s, (@%s)" % (current_range.value, channel.value))
+    smu.write("MEM:VOLT:LIM %s, (@%s)" % (voltage_limit, channel.value))
+    smu.write("MEM:CURR:LIM %s, (@%s)" % (current_limit, channel.value))
+    # enable auto delay to allow for stable signal
+    smu.write("MEM:SOUR:DEL:AUTO ON, (@%s)" % (channel.value))
+    # create the pulse signal steps
+    smu.write("MEM:SOUR:DEL SING,%s,(@%s)" % (pulse_width_ms, channel.value))
+    smu.write("MEM:CURR:SOUR %s, (@%s)" % (I_peak, channel.value))
+    smu.write("MEM:CURR:SOUR %s, (@%s)" % (0.0, channel.value))
+
+    # configure start step, end step, loops count
+    smu.write("MEM:CONF:POIN %s,%s,%s,(@%s)" % (1, 8, loops, channel.value))
+
+    # stores all commands from the active memory list into the nonvolatile memory
+    smu.write("MEM:LIST:STOR (@%s)" % (channel.value))
+
+
+def create_smu_pulse_voltage(
+    smu: KeysightU2723Wrapper,
+    channel: SMUChannel,
+    V_peak: float,
+    pulse_width_ms: float,
+    memory_list: SMUMemoryList = SMUMemoryList.Mem1,
+    loops: int = 1,
+    voltage_limit: float = 20,  # 20 V
+    current_limit: float = 0.1,  # 100 mA
+    voltage_range: SMUVoltageRange = SMUVoltageRange.R20V,
+    current_range: SMUVoltageRange = SMUCurrentRange.R120mA,
+) -> None:
+    """
+    Generate a pulse voltage signal and store it in SMU memory list
+    NOTE. for execution of memory list. call: smu.trigger_memory_list(channel)
+    NOTE: This function does not enable/disable the output state of the SMU channel
+        it is assumed that this done prior to triggering the memory list
+    Args:
+        smu (KeysightU2723Wrapper): handle to SMU
+        channel (SMUChannel): target SMU channel
+        V_peak (float): pulse voltage magnitude in V
+        memory_list (SMUMemoryList, optional): memory list to use Defaults to SMUMemoryList.Mem1.
+        loops (int, optional): number of times to repeat the pulse loading. Defaults to 1.
+
+    """
+
+    # select memory list and clear existing commands
+    smu.write("MEM:LIST %s, (@%s)" % (memory_list.value, channel.value))
+    smu.write("MEM:LIST:CLEAR (@%s)" % (channel.value))
+
+    # set voltage , current ranges and voltage, current limits for the channel
+    smu.write("MEM:VOLT:RANG %s, (@%s)" % (voltage_range.value, channel.value))
+    smu.write("MEM:CURR:RANG %s, (@%s)" % (current_range.value, channel.value))
+    smu.write("MEM:VOLT:LIM %s, (@%s)" % (voltage_limit, channel.value))
+    smu.write("MEM:CURR:LIM %s, (@%s)" % (current_limit, channel.value))
+    # enable auto delay to allow for stable signal
+    smu.write("MEM:SOUR:DEL:AUTO ON, (@%s)" % (channel.value))
+    # create the pulse signal steps
+    smu.write("MEM:SOUR:DEL SING,%s,(@%s)" % (pulse_width_ms, channel.value))
+    smu.write("MEM:VOLT:SOUR %s, (@%s)" % (V_peak, channel.value))
+    smu.write("MEM:VOLT:SOUR %s, (@%s)" % (0.0, channel.value))
+
+    # configure start step, end step, loops count
+    smu.write("MEM:CONF:POIN %s,%s,%s,(@%s)" % (1, 8, loops, channel.value))
+
+    # stores all commands from the active memory list into the nonvolatile memory
+    smu.write("MEM:LIST:STOR (@%s)" % (channel.value))
