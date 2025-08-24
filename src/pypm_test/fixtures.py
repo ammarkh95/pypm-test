@@ -74,11 +74,11 @@ def psu_handle(
     psu_wrapper.close()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def psu_multimeter(
     pytestconfig: Config,
     psu_handle: Generator[KeysightU3606Wrapper, None, None],
-) -> KeysightU3606Wrapper:
+) -> None:
     mulitmeter_mode = KEYISGHT_MULTIMETER_MODES_MAP.get(
         pytestconfig.getini("psu_multimeter_mode")
     )
@@ -95,6 +95,7 @@ def psu_multimeter(
 def psu_constant_voltage_output(
     pytestconfig: Config,
     psu_handle: Generator[KeysightU3606Wrapper, None, None],
+    psu_multimeter: None,
 ) -> Generator[KeysightU3606Wrapper, None, None]:
     cv_output_value = pytestconfig.getini("psu_constant_voltage_output")
     if not cv_output_value:
@@ -115,6 +116,7 @@ def psu_constant_voltage_output(
 def psu_constant_current_output(
     pytestconfig: Config,
     psu_handle: Generator[KeysightU3606Wrapper, None, None],
+    psu_multimeter: None,
 ) -> Generator[KeysightU3606Wrapper, None, None]:
     cc_output_value = pytestconfig.getini("psu_constant_current_output")
     if not cc_output_value:

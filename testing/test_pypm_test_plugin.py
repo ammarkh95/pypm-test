@@ -18,6 +18,12 @@ def read_pytest_ini(request):
     return pathlib.Path(request.config.rootdir, "pytest.ini").read_text()
 
 
+@pytest.fixture(scope="module")
+def pyvisa_resource() -> pyvisa.ResourceManager:
+    pyvisa.log_to_screen(logging.INFO)
+    return pyvisa.ResourceManager()
+
+
 @pytest.mark.pytester_example_path("fixture_tests")
 def test_psu_fixtures(testdir, read_pytest_ini) -> None:
     testdir.makeini(read_pytest_ini)
@@ -29,13 +35,10 @@ def test_psu_fixtures(testdir, read_pytest_ini) -> None:
     result.assert_outcomes(passed=3)
 
 
-def test_psu_context_manager() -> None:
+def test_psu_context_manager(pyvisa_resource: pyvisa.ResourceManager) -> None:
     logging.info("::::::Running PSU Context Manager::::::")
-    pyvisa_dev_manager = pyvisa.ResourceManager()
-    pyvisa.log_to_screen(logging.INFO)
-
     with KeysightU3606SupplyAndMultimeter(
-        pyvisa_manager=pyvisa_dev_manager,
+        pyvisa_manager=pyvisa_resource,
         serial_no="MXXX",
         dc_output_mode=DCOutputMode.CONSTANT_VOLTAGE,
         mulitimeter_mode=MultimeterMode.CURRENT,
