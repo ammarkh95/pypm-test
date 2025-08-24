@@ -56,7 +56,7 @@ After installing the above on the host PC and connecting the equipment, you shou
 
 ## Usage
 
--   Usage as Python module with context managers
+-   **Usage as Python module with context managers**
 
     You can start utilizing pypm-test module directly in your scripts by importing the wrapper classes. However, to make the experience easier, I implemented context managers to confgiure the equipment output for measurement and control the setup / tear down of the equipment state between different contexts (e.g. switch off output voltage / current after exiting "with" block and reset default settings)
     
@@ -154,9 +154,15 @@ After installing the above on the host PC and connecting the equipment, you shou
         smu.disable_smu_channel(SMUChannel.CH1)
         smu.disable_smu_channel(SMUChannel.CH2)
     ```
+-   **Usage as Pytest-plugin with pytest fixtures**
 
--   Usage as Pytest-plugin with pytest-fixtures
+    - A number of fixtures are implemented to help setup predefined workflow(s) for the instrument at the begining / end of the test, do a measurement based on your test context and then do a teardown / reset of the instrument at the end of the test
 
+    - You can list available fixtures from pypm-test by running the command below. Also by looking at [fixtures.py](./src/pypm_test/fixtures.py) file:
+
+        ```bash
+        pytest --fixtures 
+        ```
     ***Keysight U3606 pytest test case example***
     ```python
     ###########################################
