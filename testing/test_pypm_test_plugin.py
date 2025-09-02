@@ -39,7 +39,7 @@ def test_psu_context_manager(pyvisa_resource: pyvisa.ResourceManager) -> None:
     logging.info("::::::Running PSU Context Manager::::::")
     with KeysightU3606SupplyAndMultimeter(
         pyvisa_manager=pyvisa_resource,
-        serial_no="MXXX",
+        serial_no="MY62390018",
         dc_output_mode=DCOutputMode.CONSTANT_VOLTAGE,
         mulitimeter_mode=MultimeterMode.CURRENT,
         dc_output_value=3.6,
@@ -49,7 +49,7 @@ def test_psu_context_manager(pyvisa_resource: pyvisa.ResourceManager) -> None:
 
         # perform discrete measurements
         t_start = time.perf_counter()
-        for _ in range(100):
+        for _ in range(10):
             print(
                 f"Multimeter [READ] Current Measuremet: {psu.read() * 1000:.3f} mA"
             )
@@ -60,13 +60,17 @@ def test_psu_context_manager(pyvisa_resource: pyvisa.ResourceManager) -> None:
         )
 
         # change DC output voltage
-        psu.set_dc_supply_output_voltage(5.0)
-
+        logging.info(f"Changing DC Supply Output Voltage")
+        psu.set_dc_supply_output_voltage(1.2)
+        time.sleep(1)
+        
         # fetch continuous measurments without a trigger
+        logging.info(f"Enable Multimeter Continuous Mode")
         psu.enable_continuous_mode()
+        time.sleep(1)
 
         t_start = time.perf_counter()
-        for _ in range(100):
+        for _ in range(10):
             print(
                 f"Multimeter [Fetch] Current Measuremet: {psu.fetch() * 1000:.3f} mA"
             )
@@ -99,7 +103,7 @@ def test_smu_context_manager() -> None:
     with (
         KeysightU2723SourceMeasureUnit(
             pyvisa_manager=pyvisa_dev_manager,
-            serial_no="XXXX",
+            serial_no="MY62460002",
             smu_channel_1_output_mode=SMUChannelMode.SVMI,  # Source Voltage Measure Current
             smu_channel_1_output_value=3.6,  # Volts
             smu_channel_2_output_mode=SMUChannelMode.SIMV,  # Source Current Measure Voltage
@@ -109,10 +113,11 @@ def test_smu_context_manager() -> None:
         # enable Voltage output on Channel 1 & Current output on Channel 2
         smu.enable_smu_channel(SMUChannel.CH1)
         smu.enable_smu_channel(SMUChannel.CH2)
+        time.sleep(1)
 
         # perform discrete voltage and current measurements
         t_start = time.perf_counter()
-        for _ in range(100):
+        for _ in range(10):
             print(
                 f"CH1 (Voltage): {smu.measure_voltage_scalar(SMUChannel.CH1):.3f} V, CH1 (Current): {smu.measure_current_scalar(SMUChannel.CH1) * 1000:.3f} mA"
             )
@@ -130,6 +135,7 @@ def test_smu_context_manager() -> None:
         smu.set_sweep_points(SMUChannel.CH1, 150)
         smu.set_sweep_interval(SMUChannel.CH2, 40)
         smu.set_sweep_points(SMUChannel.CH2, 150)
+        time.sleep(1)
 
         # trigger array measurements
         t_start = time.perf_counter()

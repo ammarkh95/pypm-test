@@ -300,20 +300,21 @@ class KeysightU3606Wrapper:
         # CV mode
         if output_mode.value == DCOutputMode.CONSTANT_VOLTAGE.value:
             # set source voltage, over current limit and voltage range for the output
-            self.set_dc_supply_output_voltage(output_value)
             self._device_handle.write("SOUR:CURR:LIM %s" % over_current_limit)
             self._device_handle.write(
                 "SOUR:VOLT:RANG %s" % voltage_range.value
             )
+            self.set_dc_supply_output_voltage(output_value)
+
 
         # CC mode
         else:
             # set source current, over voltage limit and current range for the output
-            self.set_dc_supply_output_current(output_value)
             self._device_handle.write("SOUR:VOLT:LIM %s" % over_voltage_limit)
             self._device_handle.write(
                 "SOUR:CURR:RANG %s" % current_range.value
             )
+            self.set_dc_supply_output_current(output_value)
 
         logging.info(
             f"DC supply configured with the following options: {output_mode.name}, output value: {output_value} (Volts / Amps), (Voltage Range): {voltage_range.name}, (Current Range): {current_range.name}"

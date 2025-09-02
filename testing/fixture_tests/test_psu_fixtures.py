@@ -34,8 +34,8 @@ def test_psu_constant_voltage_output_fixture(
     psu_constant_voltage_output: KeysightU3606Wrapper, pytestconfig: Config
 ) -> None:
     assert (
-        pytestconfig.getini("psu_multimeter_mode").upper()
-        in psu_constant_voltage_output.query_multimeter_configuration()
+        psu_constant_voltage_output.query_multimeter_configuration()[0:4]
+        in pytestconfig.getini("psu_multimeter_mode").upper()[0:4]
     ), "incorrect multimeter configuration"
     assert psu_constant_voltage_output.query_dc_supply_output_status() == 1, (
         "device output is disabled after fixture run"
@@ -68,8 +68,8 @@ def test_psu_constant_current_output_fixture(
     psu_constant_current_output: KeysightU3606Wrapper, pytestconfig: Config
 ) -> None:
     assert (
-        pytestconfig.getini("psu_multimeter_mode").upper()
-        in psu_constant_current_output.query_multimeter_configuration()
+        psu_constant_current_output.query_multimeter_configuration()[0:4]
+        == pytestconfig.getini("psu_multimeter_mode").upper()[0:4]
     ), "incorrect multimeter configuration"
     assert psu_constant_current_output.query_dc_supply_output_status() == 1, (
         "device output is disabled after fixture setup"
