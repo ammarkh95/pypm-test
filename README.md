@@ -8,6 +8,7 @@ The library could be used as a python module to create standalone scripts for le
 ## Supported Equipment
 
 The automation of power measurements was implemented based on the availablity of the two equipment listed below:
+These euipment are expensive to get. You can checkout my [lower cost automation test setup](https://github.com/ammarkh95/pytest-analog) as an alternative
 
 | Equipment           | Specs (Datasheet)         | SCPI programming manual
 |---------------------|---------------|----------------------------------------------|
@@ -251,7 +252,7 @@ After installing the above on the host PC and connecting the equipment, you shou
         ...
     ```
 
-## Testing and verification
+## Examples, Testing and verification
 Automated test cases are available inside the [testing](./testing/) directory to verify majority of the functions of the library with the supported hardware. These could also serve as starting examples for writing your own test cases with regards to the system you are targeting in your test 
 
 # Contribute
