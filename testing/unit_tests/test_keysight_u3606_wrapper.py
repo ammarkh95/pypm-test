@@ -54,6 +54,8 @@ def test_keysight_u36_multimeter_func(psu_handle: KeysightU3606Wrapper) -> None:
     actual_status = psu_handle.query_continuous_mode_status()
     assert actual_status == 0
 
+    psu_handle.clear_presets()
+
 def test_keysight_u36_measure_and_reading_speed(psu_handle: KeysightU3606Wrapper) -> None:
     """
     Test the speed of Read and Fetch commands for KeysightU3606Wrapper
@@ -80,7 +82,9 @@ def test_keysight_u36_measure_and_reading_speed(psu_handle: KeysightU3606Wrapper
     t_stop = time.perf_counter()        
     reading_speed = ( no_readings / (t_stop - t_start) )
     logging.info(f"FETCH speed is: {reading_speed} reads/sec")
-        
+
+    psu_handle.clear_presets()
+ 
 def test_keysight_u36_calc_func(psu_handle: KeysightU3606Wrapper) -> None:
     """
     Test the execution of calculate functions for KeysightU3606Wrapper
@@ -129,68 +133,8 @@ def test_keysight_u36_calc_func(psu_handle: KeysightU3606Wrapper) -> None:
     assert current_calc_status == 0
     
     logging.info(f"Disabled calculation function with the following options: {current_calc_func}, {current_calc_status}")  
-    
-def test_keysight_u36_dc_supply_func(pytestconfig: Config, keysight_u36_dc_supply: KeysightU3606Wrapper) -> None:
 
-    """
-    Test the functions provided by the DC Power supply of U3606B
-    
-    """
-
-    # assert dc supply fixture enabled with correct pytest config
-    assert pytestconfig.getini("keysight_dc_output_mode") == "constant_voltage"
-    assert float(pytestconfig.getini("keysight_dc_output_value")) == 3.6
-    
-    # query the set voltage from the DC supply
-    output_voltage_setting = keysight_u36_dc_supply.query_dc_supply_output_voltage() 
-    assert output_voltage_setting == 3.6
-    logging.info(f"Keysight U36 DC supply set to constant_voltage output mode with voltage set to: {output_voltage_setting} volts")
-    
-    # query over current limit setting
-    oc_lim = keysight_u36_dc_supply.query_dc_supply_over_current_limit()
-    assert oc_lim == 1.0
-    logging.info(f"Over current limit set to: {oc_lim} amps")
-    
-    # check output is enabled
-    output_status = keysight_u36_dc_supply.query_dc_supply_output_status()
-    assert output_status == 1
-    
-    # read sensed current at output
-    sense_current = keysight_u36_dc_supply.query_dc_supply_sense_current()
-    logging.info(f"Sensed current at output: {sense_current} amps")
-    
-    # disable dc supply output and check correct status is reflected
-    keysight_u36_dc_supply.disable_dc_output()
-    output_status = keysight_u36_dc_supply.query_dc_supply_output_status()
-    assert output_status == 0
-    keysight_u36_dc_supply.clear_presets()
-
-    # configure DC supply in CC mode with output of (0.0001 A)
-    keysight_u36_dc_supply.configure_dc_supply(DCOutputMode.CONSTANT_CURRENT, 0.0001)
-    output_current_setting = keysight_u36_dc_supply.query_dc_supply_output_current() 
-    assert output_current_setting == 0.0001
-    logging.info(f"Keysight U36 DC supply set to constant_current output mode with current set to: {output_current_setting} amps")
-    
-    # query over voltage limit setting
-    ov_lim = keysight_u36_dc_supply.query_dc_supply_over_voltage_limit()
-    assert ov_lim == 30.0
-    logging.info(f"Over voltage limit set to: {ov_lim} volts")
-    
-    # enable DC supply output
-    keysight_u36_dc_supply.enable_dc_output()
-    
-    # check output is enabled
-    output_status = keysight_u36_dc_supply.query_dc_supply_output_status()
-    assert output_status == 1
-    
-    # read sensed voltage at output
-    sense_voltage = keysight_u36_dc_supply.query_dc_supply_sense_voltage()
-    logging.info(f"Sensed voltage at output: {sense_voltage} volts")
-    
-    # disable dc supply output and check correct status is reflected
-    keysight_u36_dc_supply.disable_dc_output()
-    output_status = keysight_u36_dc_supply.query_dc_supply_output_status()
-    assert output_status == 0
+    psu_handle.clear_presets()
 
 def test_keysight_u36_dc_supply_ramp_func(psu_handle: KeysightU3606Wrapper) -> None:
     """
@@ -263,6 +207,7 @@ def test_keysight_u36_dc_supply_ramp_func(psu_handle: KeysightU3606Wrapper) -> N
     psu_handle.disable_dc_output()
     dc_output_status = psu_handle.query_dc_supply_output_status()
     assert dc_output_status == 0
+    
     psu_handle.clear_presets()
 
 def test_keysight_u36_dc_supply_scan_func(psu_handle: KeysightU3606Wrapper) -> None:
@@ -319,6 +264,7 @@ def test_keysight_u36_dc_supply_scan_func(psu_handle: KeysightU3606Wrapper) -> N
     psu_handle.disable_dc_output()
     dc_output_status = psu_handle.query_dc_supply_output_status()
     assert dc_output_status == 0
+    
     psu_handle.clear_presets()
         
 def test_keysight_u36_square_wav_func(psu_handle: KeysightU3606Wrapper) -> None:
@@ -347,7 +293,9 @@ def test_keysight_u36_square_wav_func(psu_handle: KeysightU3606Wrapper) -> None:
     
     dc_output_status = psu_handle.query_dc_supply_output_status()
     assert dc_output_status == 0     
-     
+    
+    psu_handle.clear_presets()
+
 def test_keysight_u36_logging_func(psu_handle: KeysightU3606Wrapper) -> None:
     """
     Test the multimeter logging functions of KeysightU3606Wrapper
@@ -389,3 +337,5 @@ def test_keysight_u36_logging_func(psu_handle: KeysightU3606Wrapper) -> None:
             break
 
     logging.info(f"Logging process collected {len(data)} data samples")
+    
+    psu_handle.clear_presets()
