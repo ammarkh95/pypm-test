@@ -60,12 +60,12 @@ def test_psu_context_manager(pyvisa_resource: pyvisa.ResourceManager) -> None:
         )
 
         # change DC output voltage
-        logging.info(f"Changing DC Supply Output Voltage")
+        logging.info("Changing DC Supply Output Voltage")
         psu.set_dc_supply_output_voltage(1.2)
         time.sleep(1)
-        
+
         # fetch continuous measurments without a trigger
-        logging.info(f"Enable Multimeter Continuous Mode")
+        logging.info("Enable Multimeter Continuous Mode")
         psu.enable_continuous_mode()
         time.sleep(1)
 

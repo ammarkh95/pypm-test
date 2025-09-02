@@ -1,9 +1,14 @@
 # pypm-test
-Python library to automate testing &amp; characterization of power managment features of IoT systems. The library makes use of [PyVisa](https://pyvisa.readthedocs.io/en/latest/) to automate the functionality of professional power supply / analysis equipment supporting the [SCPI](https://www.ivifoundation.org/About-IVI/scpi.html) standard
+Python library to automate testing &amp; characterization of power managment features of IoT systems. 
 
-The library could be used as a python module to create standalone scripts for learning and demonstration purposes. In addiition, it could be used professionally as pytest-plugin in a R&D environment to write automated test cases for a SUT (system under test)
+The library makes use of [PyVisa](https://pyvisa.readthedocs.io/en/latest/) to automate the functionality of professional power supply / analysis equipment supporting the [SCPI](https://www.ivifoundation.org/About-IVI/scpi.html) standard
 
-#### TODO: ADD AN IMAGE HERE 
+The library could be used as a python module to create standalone scripts for learning and demonstration purposes. In addiition, it could be used professionally as pytest-plugin in a R&D environment to write automated test cases for a SUT (system under test).
+
+<div style="width:600px">
+
+![alt text](docs/Keysight_Test_Setup.jpg)
+<div>
 
 ## Supported Equipment
 
@@ -21,9 +26,12 @@ You need to install the VISA drivers for the above equipment before you could co
 - [Keysight IO Libraries Suite Downloads](https://www.keysight.com/us/en/lib/software-detail/computer-software/io-libraries-suite-downloads-2175637.html)
 - [Measurement Manager (AMM)](https://www.keysight.com/us/en/lib/software-detail/computer-software/measurement-manager-amm-883008.html)
 
-After installing the above on the host PC and connecting the equipment, you should be able to see them listed in Keysgiht Connection Expert software which means they should be identifiable by PyVisa
+After installing the above on the host PC and connecting the equipment, you should be able to see them listed in Keysgiht Connection Expert software which means they should be identifiable by PyVisa.
 
-#### TODO: ADD AN IMAGE HERE 
+<div style="width:600px">
+
+![alt text](docs/Keysight_Connection_Expert.png)
+<div>
 
 **Important Note:** the current implementation of this library assumes the equipment are connected via USB interface
 
@@ -252,8 +260,8 @@ After installing the above on the host PC and connecting the equipment, you shou
         ...
     ```
 
-## Examples, Testing and verification
-Automated test cases are available inside the [testing](./testing/) directory to verify majority of the functions of the library with the supported hardware. These could also serve as starting examples for writing your own test cases with regards to the system you are targeting in your test 
+## Examples, Testing and Verification
+Automated test cases are available inside the [testing](./testing/) directory to verify majority of the functions of the library with the supported hardware. These could also serve as starting examples for writing your own test cases with regards to the system you are targeting in your test.
 
 # Contribute
 Contributions to pypm-test are welcome to extend the functions list / add wrappers for additonal test power equipment

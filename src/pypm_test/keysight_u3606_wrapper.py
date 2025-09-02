@@ -306,7 +306,6 @@ class KeysightU3606Wrapper:
             )
             self.set_dc_supply_output_voltage(output_value)
 
-
         # CC mode
         else:
             # set source current, over voltage limit and current range for the output
